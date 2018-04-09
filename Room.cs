@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DungeonGame
 {
@@ -11,6 +9,7 @@ namespace DungeonGame
         int Y1 { get; set; }
         int Y2 { get; set; }
 
+        double[] GetCenter();
         bool IntersectsRoom(Room room);
     }
     public class Room : IRoom
@@ -29,10 +28,17 @@ namespace DungeonGame
         public int Y1 { get; set; }
         public int Y2 { get; set; }
 
+        public double[] GetCenter()
+        {
+            var x = Math.Floor(((double)X1 + (double)X2) / 2);
+            var y = Math.Floor(((double)Y1 + (double)Y2) / 2);
+            return new double[] { x, y };
+        }
+
         public bool IntersectsRoom(Room room)
         {
             return (X1 <= room.X2 && X2 >= room.X1 &&
-            Y1 <= room.Y2 && room.Y2 >= room.Y1);
+            Y1 <= room.Y2 && Y2 >= room.Y1);
         }
     }
 }

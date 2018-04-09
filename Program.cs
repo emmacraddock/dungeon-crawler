@@ -8,14 +8,19 @@ namespace DungeonGame
         {
             // Dependencies:
             var inputController = new UserInputController();
-            var userPosition = new UserPosition(4, 4);
             var mapGenerator = new MapGenerator();
 
-            //Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
-            //Console.WriteLine("X");
-   
+            Console.CursorVisible = false;
+
+            mapGenerator.CreateMap();
+            mapGenerator.PlaceRooms(1, 10, 2);
             mapGenerator.DrawMap();
-            while (Console.ReadKey().Key != ConsoleKey.Escape) { }
+
+            //var startPositon = map[0].GetCenter();
+            //var userPosition = new UserPosition((int)startPositon[0], (int)startPositon[1]);
+
+            //Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
+            //Console.WriteLine("@");
 
             //while (true)
             //{
@@ -27,10 +32,13 @@ namespace DungeonGame
 
             //    userPosition = inputController.HandleInput(input, userPosition);
 
-            //    Console.Clear();
             //    Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
-            //    Console.WriteLine("X");
+                
+            //    Console.WriteLine("@");
             //}
+
+            while (Console.ReadKey().Key != ConsoleKey.Escape) { }
+
         }
     }
 }

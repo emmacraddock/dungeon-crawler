@@ -13,23 +13,39 @@ namespace DungeonGame
             switch (keyInfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if(userPosition.YPosition - 1 > -1)
+                    //Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition - 1);
+                    //var proposedMoveUp = Convert.ToChar(Console.Read());
+
+                   // if (proposedMoveUp == 0x002e)
+                    //{
+                        Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
+                        Console.Write(".");
                         userPosition.YPosition--;
+                    //}
                     break;
 
                 case ConsoleKey.DownArrow:
-                    if (userPosition.YPosition + 1 < 50)
+
+                        Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
+                        Console.Write(".");
                         userPosition.YPosition++;
+                    
                     break;
 
                 case ConsoleKey.LeftArrow:
-                    if (userPosition.XPosition - 1 > -1)
+
+                        Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
+                        Console.Write(".");
                         userPosition.XPosition--;
+                    
                     break;
 
                 case ConsoleKey.RightArrow:
-                    if (userPosition.XPosition + 1 < 50)
+
+                        Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
+                        Console.Write(".");
                         userPosition.XPosition++;
+                    
                     break;
             }
 
