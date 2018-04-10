@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace DungeonGame
 {
@@ -12,30 +13,31 @@ namespace DungeonGame
 
             Console.CursorVisible = false;
 
-            mapGenerator.CreateMap();
-            mapGenerator.PlaceRooms(1, 10, 2);
-            mapGenerator.DrawMap();
+            var map = mapGenerator.CreateMap(8, 10, 4);
+            mapGenerator.DrawMap(map.MapArray);
 
-            //var startPositon = map[0].GetCenter();
-            //var userPosition = new UserPosition((int)startPositon[0], (int)startPositon[1]);
+            var startPositon = map.Rooms[0].GetCenter();
+            var userPosition = new UserPosition(startPositon[0], startPositon[1]);
 
-            //Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
-            //Console.WriteLine("@");
+            Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
+            Console.WriteLine("@");
 
-            //while (true)
-            //{
+            while (true)
+            {
 
-            //    var input = Console.ReadKey();
+                var input = Console.ReadKey();
 
-            //    if (input.Key == ConsoleKey.Escape)
-            //        break;
+                if (input.Key == ConsoleKey.Escape)
+                    break;
 
-            //    userPosition = inputController.HandleInput(input, userPosition);
+                userPosition = inputController.HandleInput(input, userPosition, map.MapArray);
 
-            //    Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
-                
-            //    Console.WriteLine("@");
-            //}
+                mapGenerator.DrawMap(map.MapArray);
+
+                Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
+
+                Console.WriteLine("@");
+            }
 
             while (Console.ReadKey().Key != ConsoleKey.Escape) { }
 

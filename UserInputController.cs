@@ -8,44 +8,32 @@ namespace DungeonGame
     }
     public class UserInputController
     {
-        public UserPosition HandleInput(ConsoleKeyInfo keyInfo, UserPosition userPosition)
+        public UserPosition HandleInput(ConsoleKeyInfo keyInfo, UserPosition userPosition, Tile[,] map)
         {
             switch (keyInfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    //Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition - 1);
-                    //var proposedMoveUp = Convert.ToChar(Console.Read());
-
-                   // if (proposedMoveUp == 0x002e)
-                    //{
-                        Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
-                        Console.Write(".");
+                    var moveUpAttempt = map[(userPosition.YPosition - 1), userPosition.XPosition];
+                    if(moveUpAttempt.IsWalkable)
                         userPosition.YPosition--;
-                    //}
                     break;
 
                 case ConsoleKey.DownArrow:
-
-                        Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
-                        Console.Write(".");
-                        userPosition.YPosition++;
-                    
+                    var moveDownAttempt = map[(userPosition.YPosition + 1), userPosition.XPosition];
+                    if(moveDownAttempt.IsWalkable)
+                        userPosition.YPosition++;                    
                     break;
 
                 case ConsoleKey.LeftArrow:
-
-                        Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
-                        Console.Write(".");
-                        userPosition.XPosition--;
-                    
+                    var moveLeftAttempt = map[userPosition.YPosition, (userPosition.XPosition - 1)];
+                    if(moveLeftAttempt.IsWalkable)
+                        userPosition.XPosition--;                 
                     break;
 
                 case ConsoleKey.RightArrow:
-
-                        Console.SetCursorPosition(userPosition.XPosition, userPosition.YPosition);
-                        Console.Write(".");
-                        userPosition.XPosition++;
-                    
+                    var moveRightAttempt = map[userPosition.YPosition, (userPosition.XPosition + 1)];
+                    if(moveRightAttempt.IsWalkable)
+                        userPosition.XPosition++;                   
                     break;
             }
 

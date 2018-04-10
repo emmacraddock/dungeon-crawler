@@ -12,25 +12,21 @@ namespace DungeonGame
     {
         public const int MAP_COLUMNS = 100;
         public const int MAP_ROWS = 25;
-        public TileType[,] _map =  new TileType[MAP_ROWS, MAP_COLUMNS];
+        public Tile[,] _map =  new Tile[MAP_ROWS, MAP_COLUMNS];
 
-        public void CreateMap()
+        public Map CreateMap(int maxRooms, int maxSize, int minSize)
         {
-            
             for (int row = 0; row < MAP_ROWS; row++)
             {
-                for (int column = 0; column < MAP_COLUMNS; column ++)
+                for (int column = 0; column < MAP_COLUMNS; column++)
                 {
 
-                    _map[row, column] = TileType.Empty;
+                    _map[row, column] = new Tile(TileType.Empty);
                 }
             }
-        }
 
-        public Room[] PlaceRooms(int maxRooms, int maxSize, int minSize)
-        {
             var rooms = new List<Room> { };
-            var newCenter = new double[]{ };
+            var newCenter = new int[]{ };
 
             for (int r = 0; r < maxRooms;)
             {
@@ -57,21 +53,19 @@ namespace DungeonGame
                 {
                     if(rooms.Count != 0)
                     {
-                        var roomsArr = rooms.ToArray();
-                        var prevCenter = roomsArr[roomsArr.Length - 1].GetCenter();
-
-                        if(randomNum.Next(2) == 1)
+                        var prevCenter = rooms[rooms.Count - 1].GetCenter();
+         
+                        if(randomNum.Next(1, 2) == 1)
                         {
-                            hCorridor((int)prevCenter[0], (int)newCenter[0], (int)prevCenter[1]);
-                            vCorridor((int)prevCenter[1], (int)newCenter[1], (int)prevCenter[0]);
+                            hCorridor(prevCenter[0], newCenter[0], prevCenter[1]);
+                            vCorridor(prevCenter[1], newCenter[1], newCenter[0]);
                         }
                         else
                         {
-                            vCorridor((int)prevCenter[1], (int)newCenter[1], (int)prevCenter[0]);
-                            hCorridor((int)prevCenter[0], (int)newCenter[0], (int)prevCenter[1]);
+                            vCorridor(prevCenter[1], newCenter[1], prevCenter[0]);
+                            hCorridor(prevCenter[0], newCenter[0], newCenter[1]);
                         }
                     }
-
 
                     CreateRoom(newRoom);                    
                     rooms.Add(newRoom);
@@ -79,7 +73,7 @@ namespace DungeonGame
                 }
             }
 
-            return rooms.ToArray();
+            return new Map(_map, rooms.ToArray());
         }
 
         public void CreateRoom(Room room)
@@ -89,9 +83,9 @@ namespace DungeonGame
             {
                 for (var x = room.X1; x <= room.X2; x++)
                 {
-                    _map[row, x] = TileType.Wall;
-                    if (x > room.X1 && x < room.X2 && row > room.Y1 && row < room.Y2)
-                        _map[row, x] = TileType.Dirt;
+                   // _map[row, x] = TileType.Wall;
+                   // if (x > room.X1 && x < room.X2 && row > room.Y1 && row < room.Y2)
+                        _map[row, x] = new Tile(TileType.Dirt, true);
                 }
                 row++;
             }
@@ -101,8 +95,7 @@ namespace DungeonGame
         {
             for (int x = Math.Min(x1, x2); x <= Math.Max(x1, x2); x++)
             {
-                Console.SetCursorPosition(x, y);
-                Console.Write(".");           
+                _map[y, x] = new Tile(TileType.Dirt, true);
             }
         }
 
@@ -110,18 +103,17 @@ namespace DungeonGame
         {
             for (int y = Math.Min(y1, y2); y <= Math.Max(y1, y2); y++)
             {
-                Console.SetCursorPosition(x, y);
-                Console.Write(".");
+                _map[y, x] = new Tile(TileType.Dirt, true);
             }
         }
 
-        public void DrawMap()
+        public void DrawMap(Tile[,] map)
         {
             for (int row = 0; row < MAP_ROWS; row++)
             {
                 for (int column = 0; column < MAP_COLUMNS; column++)
                 {
-                    var tile = _map[row, column];
+                    var tile = map[row, column];
                     Console.SetCursorPosition(column, row);
                     var tileChar = GetTile(tile);
                     Console.Write(tileChar);
@@ -129,11 +121,11 @@ namespace DungeonGame
             }
         }
 
-        private string GetTile(TileType tile)
+        private string GetTile(Tile tile)
         {
-            if (tile == TileType.Dirt)
+            if (tile.TileType == TileType.Dirt)
                 return ".";
-            if (tile == TileType.Wall)
+            if (tile.TileType == TileType.Wall)
                 return "#";
             return "";
         }
